@@ -37,6 +37,7 @@ function Subscribe(props) {
     const variable = { userTo: props.userTo };
     Axios.post("/api/subscribe/subscribeNumber", variable).then((response) => {
       if (response.data.success) {
+        setSubscribeNumber(response.data.subscribeNumber);
       } else {
         alert("구독자 수 정보를 받아오지 못했습니다.");
       }
