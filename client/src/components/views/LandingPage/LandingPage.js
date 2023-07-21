@@ -26,7 +26,7 @@ function LandingPage() {
     return (
       /* 가장 작을 때는 24, 중간 사이즈일때는 8 -> 한줄에 3개, 가장 클때는 6 -> 한줄에 4개*/
       <Col lo={6} md={8} xs={24}>
-        <a href={`/video/post/${video.id}`}>
+        <a href={`/video/${video._id}`}>
           <div style={{ position: "relative" }}>
             <img
               style={{ width: "100%" }}
