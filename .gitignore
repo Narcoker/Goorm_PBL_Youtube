@@ -15,3 +15,4 @@ yarn-error.log*
 
 /uploads/*.mp4
 /uploads/thumbnails/*.png
+package-lock.json
