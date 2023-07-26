@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { FaRegUserCircle } from "react-icons/fa";
 import { USER_SERVER } from "../../../Config";
@@ -18,9 +18,7 @@ function RightNavbar() {
       }
     });
   };
-  useEffect(() => {
-    console.log("test: ", user);
-  }, [user]);
+
   if (user.userData && !user.userData.isAuth) {
     return (
       <Container>
@@ -40,7 +38,11 @@ function RightNavbar() {
   } else {
     return (
       <Container>
-        <span>{user.userData.name}</span>
+        <AddVideoButton href="/upload">
+          <AddVideoButtonImage src="/images/AddVideoButton2.png" />
+        </AddVideoButton>
+        <UserIcon src={user.userData.image} />
+        <UserName>{user.userData.name}</UserName>
         <ButtonWrapper href="/login">
           {/* <FaRegUserCircle
             style={{
@@ -76,5 +78,31 @@ const LoginText = styled.span`
 `;
 
 // After Login
+const AddVideoButton = styled.a`
+  width: 30px;
+  height: 24px;
+  cursor: pointer;
+`;
+
+const AddVideoButtonImage = styled.img`
+  vertical-align: middle;
+  width: inherit;
+  height: inherit;
+  margin-bottom: 3px;
+  margin-right: 10px;
+`;
+
+const UserIcon = styled.img`
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  vertical-align: top;
+  margin-right: 10px;
+`;
+
+const UserName = styled.span`
+  color: white;
+  margin-right: 10px;
+`;
 
 export default RightNavbar;
