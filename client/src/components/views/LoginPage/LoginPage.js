@@ -113,7 +113,7 @@ function LoginPage(props) {
                   onChange={handleRememberMe}
                   checked={rememberMe}
                 />
-                <CheckBoxLabel htmlFor="rememberMe">RememberMe</CheckBoxLabel>
+                <CheckBoxLabel htmlFor="rememberMe">Remember me</CheckBoxLabel>
               </InputItem>
 
               <LoginButton
