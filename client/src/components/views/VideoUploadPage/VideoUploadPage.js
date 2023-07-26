@@ -6,30 +6,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { toast, ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const PrivateOptions = [
-  { value: 0, label: "Private" },
-  { value: 1, label: "Public" },
-];
-
-const CategoryOptions = [
-  {
-    value: 0,
-    label: "Film & Animation",
-  },
-  {
-    value: 1,
-    label: "Autos & Vehicles",
-  },
-  {
-    value: 2,
-    label: "Music",
-  },
-  {
-    value: 3,
-    label: "Pets & Animal",
-  },
-];
+import { PrivateOptions, CategoryOptions } from "../../Constants";
 
 function VideoUploadPage() {
   const user = useSelector((state) => state.user);

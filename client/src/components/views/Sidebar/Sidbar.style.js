@@ -18,6 +18,7 @@ export const Icon = styled.a`
   align-items: center;
   padding: 25px 0px;
   border-radius: 15px;
+  cursor: pointer;
 
   &:hover {
     background-color: #222222;
