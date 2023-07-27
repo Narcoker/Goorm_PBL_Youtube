@@ -143,6 +143,16 @@ router.post("/getSubscriptionVideos", (req, res) => {
   // 찾은 사람들의 비디오를 가지고 온다.
 });
 
+router.post("/getMyVideos", (req, res) => {
+  console.log(req.body.userId);
+  Video.find({ writer: req.body.userId }) // 수정된 부분
+    .populate("writer")
+    .exec((err, videos) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).json({ success: true, videos });
+    });
+});
+
 router.post("/increaseVideoView", (req, res) => {
   const videoId = req.body.videoId;
   Video.findOneAndUpdate(
@@ -154,6 +164,17 @@ router.post("/increaseVideoView", (req, res) => {
       res.status(200).json({ success: true, video });
     }
   );
+});
+
+router.post("/searchVideos", (req, res) => {
+  Video.find({
+    title: { $regex: req.body.query, $options: "i" }, // 'i' option makes it case insensitive
+  })
+    .populate("writer")
+    .exec((err, videos) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).json({ success: true, videos });
+    });
 });
 
 module.exports = router;

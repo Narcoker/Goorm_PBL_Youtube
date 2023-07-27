@@ -19,7 +19,7 @@ export const Icon = styled.a`
   padding: 25px 0px;
   border-radius: 15px;
   cursor: pointer;
-
+  text-decoration: none;
   &:hover {
     background-color: #222222;
   }

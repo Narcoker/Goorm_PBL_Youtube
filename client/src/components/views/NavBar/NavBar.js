@@ -3,11 +3,11 @@ import LeftNavbar from "./Sections/LeftNavbar";
 import CenterNavbar from "./Sections/CenterNavbar";
 import RightNavbar from "./Sections/RightNavbar";
 
-function NavBar() {
+function NavBar(props) {
   return (
     <Container>
       <LeftNavbar />
-      <CenterNavbar />
+      <CenterNavbar setSearchVideos={props.setSearchVideos} />
       <RightNavbar />
     </Container>
   );

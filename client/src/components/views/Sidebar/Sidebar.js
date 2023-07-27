@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React from "react";
 import * as S from "./Sidbar.style";
 
 function Sidebar() {
   return (
     <S.Container>
-      <S.Icon>
+      <S.Icon href="/">
         <S.Svg
           enableBackground="new 0 0 24 24"
           height="24px"
@@ -22,7 +22,7 @@ function Sidebar() {
         </S.Svg>
         <S.IconText>홈</S.IconText>
       </S.Icon>
-      <S.Icon>
+      <S.Icon href="/subscribe">
         <S.Svg
           enableBackground="new 0 0 24 24"
           height="24px"
@@ -39,7 +39,7 @@ function Sidebar() {
         </S.Svg>
         <S.IconText>구독</S.IconText>
       </S.Icon>
-      {/* <S.Icon>
+      <S.Icon href="/myvideo">
         <S.Svg
           enableBackground="new 0 0 24 24"
           height="24px"
@@ -48,11 +48,14 @@ function Sidebar() {
           focusable="false"
         >
           <g>
-            <path d="M4 21V10.08l8-6.96 8 6.96V21h-6v-6h-4v6H4z" fill="white" />
+            <path
+              d="m10 8 6 4-6 4V8zm11-5v18H3V3h18zm-1 1H4v16h16V4z"
+              fill="white"
+            ></path>
           </g>
         </S.Svg>
-        <S.IconText>시청 기록</S.IconText>
-      </S.Icon> */}
+        <S.IconText>내 동영상</S.IconText>
+      </S.Icon>
     </S.Container>
   );
 }

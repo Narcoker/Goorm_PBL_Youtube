@@ -1,12 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { FaSearch } from "react-icons/fa";
+import axios from "axios";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
-function CenterNavbar() {
+function CenterNavbar(props) {
+  const history = useHistory();
+  const [query, setQuery] = useState("");
+  const onChangeQuery = (e) => {
+    setQuery(e.target.value);
+  };
+  const searchHandle = () => {
+    axios
+      .post("/api/video/searchVideos", { query })
+      .then((response) => {
+        if (response.data.success) {
+          console.log(response.data.videos);
+          // 현재 컴포넌트의 상태를 업데이트하거나
+          // 검색 결과를 다루는 다른 로직을 여기에 추가할 수 있습니다.
+          props.setSearchVideos(response.data.videos);
+          history.push("/search");
+        } else {
+          alert("비디오 검색에 실패했습니다.");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const EnterButtonHandler = (e) => {
+    if (e.key === "Enter") {
+      searchHandle();
+    }
+  };
   return (
     <Container>
-      <Search placeholder="검색" />
-      <SubmitButton>
+      <Search
+        value={query}
+        onChange={(e) => onChangeQuery(e)}
+        onKeyUp={(e) => EnterButtonHandler(e)}
+        placeholder="검색"
+      />
+      <SubmitButton onClick={searchHandle}>
         <FaSearch style={{ backgroundColor: "transparent", color: "white" }} />
       </SubmitButton>
     </Container>

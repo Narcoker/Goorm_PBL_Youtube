@@ -1,17 +1,32 @@
 import styled from "@emotion/styled";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { CategoryOptions } from "../../Constants";
 import VideoItem from "./sections/VideoItem";
 import { useSelector } from "react-redux";
 
-function SubscribePage() {
-  const [Videos, setVideos] = useState([]);
+function MyVideoPage() {
   const user = useSelector((state) => state.user);
+  const [Videos, setVideos] = useState([]);
+  const [categoris, setCategories] = useState([
+    {
+      value: 0,
+      label: "전체",
+      selected: true,
+    },
+    ...CategoryOptions,
+  ]);
 
+  const handleCategory = (index) => {
+    const newCategories = categoris.map((category, idx) => {
+      return { ...category, selected: idx === index };
+    });
+
+    setCategories(newCategories);
+  };
   useEffect(() => {
-    const subscriptionVariables = { userFrom: user.userData._id };
     axios
-      .post("/api/video/getSubscriptionVideos", subscriptionVariables)
+      .post("/api/video/getMyVideos", { userId: user.userData._id })
       .then((response) => {
         if (response.data.success) {
           console.log(response.data);
@@ -24,6 +39,17 @@ function SubscribePage() {
   return (
     <>
       <Container>
+        <CategoriesContainer>
+          {categoris.map((category, index) => (
+            <CategoryButton
+              selected={category.selected}
+              onClick={() => handleCategory(index)}
+            >
+              {category.label}
+            </CategoryButton>
+          ))}
+        </CategoriesContainer>
+
         <VideosContainer>
           {Videos.map((video) => (
             <VideoItem key={video._id} video={video} />
@@ -61,4 +87,4 @@ const VideosContainer = styled.div`
   padding: 10px;
 `;
 
-export default SubscribePage;
+export default MyVideoPage;
