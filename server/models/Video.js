@@ -8,7 +8,7 @@ const videoSchema = mongoose.Schema(
     },
     title: {
       type: String,
-      maxlength: 50,
+      maxlength: 100,
     },
     description: {
       type: String,
@@ -24,7 +24,7 @@ const videoSchema = mongoose.Schema(
     },
     view: {
       type: Number,
-      defalult: 0,
+      default: 0,
     },
     duration: {
       type: String,

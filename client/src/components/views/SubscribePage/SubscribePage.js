@@ -1,11 +1,10 @@
 import styled from "@emotion/styled";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { FaCode } from "react-icons/fa";
 import { CategoryOptions } from "../../Constants";
 import VideoItem from "./sections/VideoItem";
 
-function LandingPage() {
+function SubscribePage() {
   const [Videos, setVideos] = useState([]);
   const [categoris, setCategories] = useState([
     {
@@ -84,4 +83,4 @@ const VideosContainer = styled.div`
   padding: 10px;
 `;
 
-export default LandingPage;
+export default SubscribePage;

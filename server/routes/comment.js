@@ -17,6 +17,7 @@ router.post("/saveComment", (req, res) => {
       .populate("writer")
       .exec((err, result) => {
         if (err) return res.json({ success: false, err });
+        console.log(result);
         res.status(200).json({ success: true, result });
       });
   });

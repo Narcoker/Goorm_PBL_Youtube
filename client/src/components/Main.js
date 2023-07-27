@@ -5,6 +5,7 @@ import LandingPage from "./views/LandingPage/LandingPage.js";
 import NavBar from "./views/NavBar/NavBar";
 import Sidebar from "./views/Sidebar/Sidebar";
 import VideoUploadPage from "./views/VideoUploadPage/VideoUploadPage";
+import VideoDetailPage from "./views/VideoDetailPage/VideoDetailPage";
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
@@ -18,6 +19,7 @@ function Main() {
         <Switch>
           <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/upload" component={Auth(VideoUploadPage, null)} />
+          <Route exact path="/video/:videoId" component={Auth(VideoDetailPage, null)} />
         </Switch>
       </div>
     </Suspense>

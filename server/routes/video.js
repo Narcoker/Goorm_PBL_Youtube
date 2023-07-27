@@ -143,4 +143,17 @@ router.post("/getSubscriptionVideos", (req, res) => {
   // 찾은 사람들의 비디오를 가지고 온다.
 });
 
+router.post("/increaseVideoView", (req, res) => {
+  const videoId = req.body.videoId;
+  Video.findOneAndUpdate(
+    { _id: videoId },
+    { $inc: { view: 1 } },
+    { new: true },
+    (err, video) => {
+      if (err) return res.status(400).json({ success: false, err });
+      res.status(200).json({ success: true, video });
+    }
+  );
+});
+
 module.exports = router;

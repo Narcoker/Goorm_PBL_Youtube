@@ -5,7 +5,7 @@ const { Like } = require("../models/Like");
 const { Dislike } = require("../models/Dislike");
 
 //=================================
-//             Like
+//             Like좋아요
 //=================================
 router.post("/getLikes", (req, res) => {
   let variable = {};
@@ -20,7 +20,7 @@ router.post("/getLikes", (req, res) => {
   });
 });
 
-router.post("/getDisLikes", (req, res) => {
+router.post("/getDislikes", (req, res) => {
   let variable = {};
   if (req.body.videoId) {
     variable = { videoId: req.body.videoId };
@@ -97,7 +97,7 @@ router.post("/upDislike", (req, res) => {
   dislike.save((err, dislikeResult) => {
     if (err) return res.json({ success: false, err });
 
-    // 만약에 Dislike이 이미 클릭이 되어있다면, DisLike을 1 줄여준다.
+    // 만약에 like이 이미 클릭이 되어있다면, Like을 1 줄여준다.
     Like.findOneAndDelete(variable).exec((err, likeResult) => {
       if (err) return res.status(400).json({ success: false, err });
       res.status(200).json({ success: true });

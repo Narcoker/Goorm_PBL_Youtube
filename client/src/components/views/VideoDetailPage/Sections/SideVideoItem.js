@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
-function VideoItem(props) {
+function SideVideoItem(props) {
   const minutes = Math.floor(props.video.duration / 60)
     .toString()
     .padStart(2, "0");
@@ -18,14 +18,9 @@ function VideoItem(props) {
       </ThumbnailWrapper>
 
       <MetaWrapper>
-        <MetaLeft>
-          <UserIcon src={props.video.writer.image} />
-        </MetaLeft>
-        <MetaRight>
-          <VideoTitle>{props.video.title}</VideoTitle>
-          <Writer>{props.video.writer.name}</Writer>
-          <Views>조회수 </Views>
-        </MetaRight>
+        <VideoTitle>{props.video.title}</VideoTitle>
+        <Writer>{props.video.writer.name}</Writer>
+        <Views>조회수 {props.video.view}회</Views>
       </MetaWrapper>
     </VideoContainer>
   );
@@ -33,10 +28,10 @@ function VideoItem(props) {
 
 const VideoContainer = styled.a`
   margin-bottom: 30px;
-  height: 65%;
   text-decoration: none;
   transition: 0.5s;
-
+  display: flex;
+  gap: 10px;
   cursor: pointer;
   &:hover {
     transform: scale(1.05);
@@ -44,10 +39,10 @@ const VideoContainer = styled.a`
 `;
 
 const ThumbnailWrapper = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 168px;
+  height: 94px;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 8px;
   position: relative;
   margin-bottom: 10px;
   transition: 0.5s;
@@ -64,31 +59,27 @@ const Duration = styled.span`
   z-index: 5;
   position: absolute;
   bottom: 5px;
-  right: 10px;
+  right: 5px;
   background: black;
   font-weight: 600;
   padding: 1px 3px;
   border-radius: 5px;
+  font-size: 11px;
 `;
 
 const MetaWrapper = styled.div`
-  display: flex;
+  width: 200px;
 `;
 
-const MetaLeft = styled.div``;
-const UserIcon = styled.img`
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-`;
-
-const MetaRight = styled.div`
-  padding-left: 10px;
-`;
 const VideoTitle = styled.p`
   color: white;
   font-weight: bold;
   font-size: 16px;
+  margin-bottom: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 const Writer = styled.p`
   color: #a9a9a9;
@@ -97,4 +88,4 @@ const Views = styled.p`
   color: #a9a9a9;
 `;
 
-export default VideoItem;
+export default SideVideoItem;

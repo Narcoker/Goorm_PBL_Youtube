@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Dropzone from "react-dropzone";
 import Axios from "axios";
@@ -83,11 +83,10 @@ function VideoUploadPage() {
 
     Axios.post("/api/video/uploadVideo", variable).then((response) => {
       if (response.data.success) {
-        // message.success("성공적으로 업로드를 했습니다.");
-        toast("성공적으로 업로드하였습니다!", { autoClose: 2200 });
+        toast.success("성공적으로 업로드하였습니다!", { autoClose: 1000 });
         setTimeout(() => {
           history.push("/");
-        }, 3000);
+        }, 2000);
       } else {
         alert("비디오 업로드에 실패 했습니다.");
       }
@@ -96,13 +95,6 @@ function VideoUploadPage() {
 
   return (
     <Container>
-      <ToastContainer
-        draggable={false}
-        transition={Zoom}
-        theme="dark"
-        pauseOnFocusLoss={false}
-      />
-
       <Header>
         <Title>동영상 업로드</Title>
       </Header>
@@ -134,7 +126,7 @@ function VideoUploadPage() {
 
         <InputItem>
           <Label>Title</Label>
-          <Input onChange={onTitleChange} value={VideoTitle} />
+          <Input onChange={onTitleChange} value={VideoTitle} maxLength={100} />
         </InputItem>
 
         <InputItem>
