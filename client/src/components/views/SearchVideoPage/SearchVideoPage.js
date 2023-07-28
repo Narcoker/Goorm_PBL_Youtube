@@ -28,17 +28,6 @@ function SearchVideoPage(props) {
   return (
     <>
       <Container>
-        <CategoriesContainer>
-          {categoris.map((category, index) => (
-            <CategoryButton
-              selected={category.selected}
-              onClick={() => handleCategory(index)}
-            >
-              {category.label}
-            </CategoryButton>
-          ))}
-        </CategoriesContainer>
-
         <VideosContainer>
           {Videos.map((video) => (
             <VideoItem key={video._id} video={video} />
