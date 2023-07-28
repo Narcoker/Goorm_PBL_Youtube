@@ -145,7 +145,7 @@ router.post("/getSubscriptionVideos", (req, res) => {
 
 router.post("/getMyVideos", (req, res) => {
   console.log(req.body.userId);
-  Video.find({ writer: req.body.userId }) // 수정된 부분
+  Video.find({ writer: req.body.userId })
     .populate("writer")
     .exec((err, videos) => {
       if (err) return res.status(400).send(err);

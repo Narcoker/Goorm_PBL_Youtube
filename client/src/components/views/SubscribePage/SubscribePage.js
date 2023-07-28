@@ -3,12 +3,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import VideoItem from "./sections/VideoItem";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 function SubscribePage() {
   const [Videos, setVideos] = useState([]);
   const user = useSelector((state) => state.user);
-
-
 
   useEffect(() => {
     const subscriptionVariables = { userFrom: user.userData._id };
@@ -19,7 +18,7 @@ function SubscribePage() {
           console.log(response.data);
           setVideos(response.data.videos);
         } else {
-          alert("비디오 가져오기를 실패했습니다.");
+          toast.error("비디오 가져오기를 실패했습니다.", { autoClose: 1500 });
         }
       });
   }, []);

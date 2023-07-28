@@ -11,13 +11,17 @@ function NavBar(props) {
   const handleModal = () => {
     setisModalOpened((prev) => !prev);
   };
+
+  const closeModal = () => {
+    setisModalOpened(false);
+  }
   return (
     <Container>
       <LeftNavbar />
       <CenterNavbar setSearchVideos={props.setSearchVideos} />
       <RightNavbar handleModal={handleModal} />
 
-      {isModalOpened && <SettingModal />}
+      {isModalOpened && <SettingModal closeModal={closeModal}/>}
     </Container>
   );
 }

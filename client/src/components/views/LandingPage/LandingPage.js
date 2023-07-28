@@ -5,6 +5,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { CategoryOptions } from "../../Constants";
 import VideoItem from "./sections/VideoItem";
+import { toast } from "react-toastify";
 
 function LandingPage() {
   const ButtonsRef = useRef(null);
@@ -26,6 +27,7 @@ function LandingPage() {
     });
 
     setCategories(newCategories);
+    console.log(index);
   };
 
   const handleLeftArrow = () => {
@@ -45,7 +47,7 @@ function LandingPage() {
         console.log(response.data);
         setVideos(response.data.videos);
       } else {
-        alert("비디오 가져오기를 실패했습니다.");
+        toast.error("비디오 가져오기를 실패했습니다.", { autoClose: 1500 });
       }
     });
   }, []);
@@ -55,7 +57,6 @@ function LandingPage() {
       <Container>
         <CategoriesContainer>
           <ArrowLeftButton ref={LeftRef} onClick={handleLeftArrow} />
-
           <ButtonWrapper ref={ButtonsRef}>
             {categoris.map((category, index) => (
               <CategoryButton
@@ -66,7 +67,6 @@ function LandingPage() {
               </CategoryButton>
             ))}
           </ButtonWrapper>
-
           <ArrowRightButton ref={RightRef} onClick={handleRightArrow} />
         </CategoriesContainer>
 
@@ -88,12 +88,12 @@ const Container = styled.div`
 `;
 
 const CategoriesContainer = styled.div`
-  position: sticky;
-  top: 0;
-  margin-bottom: 25px;
-  height: 28px;
-  padding-right: 27px;
+  position: fixed;
+  top: 55px;
+  height: 40px;
   background-color: #111111;
+  z-index: 5;
+  width: calc(100vw - 140px);
 `;
 
 const ArrowLeftButton = styled(AiOutlineLeft)`
@@ -107,7 +107,7 @@ const ArrowLeftButton = styled(AiOutlineLeft)`
 `;
 const ArrowRightButton = styled(AiOutlineRight)`
   position: absolute;
-  right: 0;
+  right: -30px;
   top: 50%;
   color: white;
   transform: translateY(-50%);
@@ -141,6 +141,7 @@ const VideosContainer = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 15px;
   padding: 10px;
+  margin-top: 60px;
 `;
 
 export default LandingPage;

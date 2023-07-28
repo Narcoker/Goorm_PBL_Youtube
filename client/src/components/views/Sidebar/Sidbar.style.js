@@ -10,7 +10,7 @@ export const Container = styled.div`
   height: 100vh;
 `;
 
-export const Icon = styled.a`
+export const Icon = styled.button`
   display: inline-block;
   width: inherit;
   display: flex;
@@ -20,6 +20,7 @@ export const Icon = styled.a`
   border-radius: 15px;
   cursor: pointer;
   text-decoration: none;
+  background-color: transparent;
   &:hover {
     background-color: #222222;
   }

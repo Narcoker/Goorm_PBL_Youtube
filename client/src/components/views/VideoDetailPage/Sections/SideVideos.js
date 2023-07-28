@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import SideVideoItem from "./SideVideoItem";
+import { toast } from "react-toastify";
 
 function SideVideos() {
   const [sideVideos, setSideVideos] = useState([]);
@@ -12,7 +13,7 @@ function SideVideos() {
         console.log(response.data);
         setSideVideos(response.data.videos);
       } else {
-        alert("비디오 가져오기를 실패했습니다.");
+        toast.error("비디오 가져오기를 실패했습니다.", { autoClose: 1500 });
       }
     });
   }, []);

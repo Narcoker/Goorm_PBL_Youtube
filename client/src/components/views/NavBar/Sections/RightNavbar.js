@@ -8,17 +8,6 @@ import { useSelector } from "react-redux";
 function RightNavbar(props) {
   const user = useSelector((state) => state.user);
 
-  const history = useHistory();
-  const logoutHandler = () => {
-    axios.get(`${USER_SERVER}/logout`).then((response) => {
-      if (response.status === 200) {
-        history.push("/login");
-      } else {
-        alert("Log Out Failed");
-      }
-    });
-  };
-
   if (user.userData && !user.userData.isAuth) {
     return (
       <Container>
@@ -35,13 +24,6 @@ function RightNavbar(props) {
           <AddVideoButtonImage src="/images/AddVideoButton2.png" />
         </AddVideoButton>
         <UserIcon src={user.userData.image} onClick={props.handleModal} />
-
-        {/* <SettingModal>
-        <UserName>{user.userData.name}</UserName>
-        <ButtonWrapper href="/">
-          <LoginText onClick={logoutHandler}>로그아웃</LoginText>
-        </ButtonWrapper>
-      </SettingModal> */}
       </Container>
     );
   }

@@ -6,6 +6,7 @@ import { registerUser } from "../../../_actions/user_actions";
 import { useDispatch } from "react-redux";
 import Logo from "../NavBar/Sections/Logo";
 import styled from "@emotion/styled";
+import { toast } from "react-toastify";
 
 // import { Form, Input, Button } from "antd";
 
@@ -68,7 +69,7 @@ function RegisterPage(props) {
             if (response.payload.success) {
               props.history.push("/login");
             } else {
-              alert(response.payload.err.errmsg);
+              toast.error(response.payload.err.errmsg, { autoClose: 1500 });
             }
           });
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function CommentForm(props) {
   const [newComment, setNewComment] = useState("");
@@ -41,11 +42,11 @@ function CommentForm(props) {
             props.setComments(response.data.comments);
             console.log("getComments ", response.data.comments);
           } else {
-            alert("댓글 정보를 가져오는 것을 실패했습니다.");
+            toast.error("댓글 정보를 가져오는 것을 실패했습니다.", { autoClose: 1500 });
           }
         });
       } else {
-        alert("Failed to save Comment");
+        toast.error("댓글을 쓰는데 실패했습니다.", { autoClose: 1500 });
       }
     });
   };

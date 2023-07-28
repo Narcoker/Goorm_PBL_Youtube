@@ -15,11 +15,12 @@ import SearchVideoPage from "./views/SearchVideoPage/SearchVideoPage";
 
 function Main() {
   const [searchVideos, setSearchVideos] = useState([]);
+  const [curPage, setCurPage] = useState("/");
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <NavBar setSearchVideos={setSearchVideos} />
       <div style={{ paddingTop: "56px", minHeight: "calc(100vh - 80px)" }}>
-        <Sidebar />
+        <Sidebar curPage={curPage} setCurPage={setCurPage} />
         <Switch>
           <Route exact path="/" component={Auth(LandingPage, null)} />
           <Route exact path="/subscribe" component={Auth(SubscribePage, true)} />

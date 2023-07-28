@@ -82,7 +82,6 @@ function LoginPage(props) {
         return (
           <Container>
             <Logo big width={"240px"} height={"130px"} />
-            {/* <Title level={2}>Log In</Title> */}
             <Form onSubmit={handleSubmit}>
               <InputItem required>
                 <InputLabel>Email</InputLabel>

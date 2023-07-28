@@ -59,11 +59,11 @@ function VideoUploadPage() {
             setDuration(response.data.fileDuration);
             setThumbnailPath(response.data.url);
           } else {
-            alert("썸네일 생성에 실패했습니다.");
+            toast.error("썸네일 생성에 실패했습니다.", { autoClose: 1500 });
           }
         });
       } else {
-        alert("비디오 업로드를 실패했습니디.");
+        toast.error("비디오 업로드를 실패했습니디.", { autoClose: 1500 });
       }
     });
   };
@@ -88,7 +88,7 @@ function VideoUploadPage() {
           history.push("/");
         }, 2000);
       } else {
-        alert("비디오 업로드에 실패 했습니다.");
+        toast.error("비디오 업로드에 실패 했습니다.", { autoClose: 1500 });
       }
     });
   };

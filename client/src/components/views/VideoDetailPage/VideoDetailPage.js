@@ -46,7 +46,7 @@ function VideoDetailPage() {
           setSubscribeNumber(subscribeNumber - 1);
           setSubscribed(!subscribed);
         } else {
-          alert("구독 취소 하는데 실패했습니다.");
+          toast.error("구독 취소 하는데 실패했습니다.", { autoClose: 1500 });
         }
       });
     } else {
@@ -55,7 +55,7 @@ function VideoDetailPage() {
           setSubscribeNumber(subscribeNumber + 1);
           setSubscribed(!subscribed);
         } else {
-          alert("구독 하는데 실패했습니다.");
+          toast.error("구독 하는데 실패했습니다.", { autoClose: 1500 });
         }
       });
     }
@@ -73,7 +73,7 @@ function VideoDetailPage() {
           setLike((like) => like - 1);
           setIsLiked(false);
         } else {
-          alert("좋아요를 내리지 못했습니다.");
+          toast.error("좋아요를 내리지 못했습니다.", { autoClose: 1500 });
         }
       });
       return;
@@ -89,7 +89,7 @@ function VideoDetailPage() {
             setIsDisliked(false);
           }
         } else {
-          alert("좋아요를 올리지 못했습니다.");
+          toast.error("좋아요를 올리지 못했습니다.", { autoClose: 1500 });
         }
       });
       return;
@@ -108,7 +108,7 @@ function VideoDetailPage() {
           setDislike((dislike) => (dislike - 1 > 0 ? dislike - 1 : 0));
           setIsDisliked(false);
         } else {
-          alert("싫어요를 내리지 못했습니다.");
+          toast.error("싫어요를 내리지 못했습니다.", { autoClose: 1500 });
         }
       });
       return;
@@ -125,7 +125,7 @@ function VideoDetailPage() {
             setIsLiked(false);
           }
         } else {
-          alert("싫어요를 올리지 못했습니다.");
+          toast.error("싫어요를 올리지 못했습니다.", { autoClose: 1500 });
         }
       });
       return;
@@ -160,7 +160,7 @@ function VideoDetailPage() {
           if (response.data.success) {
             setSubscribed(response.data.subscribed);
           } else {
-            alert("구독 여부 정보를 받아오지 못했습니다.");
+            toast.error("구독 여부 정보를 받아오지 못했습니다.", { autoClose: 1500 });
           }
         });
 
@@ -170,11 +170,11 @@ function VideoDetailPage() {
             console.log(response.data.subscribeNumber);
             setSubscribeNumber(response.data.subscribeNumber);
           } else {
-            alert("구독자 수 정보를 받아오지 못했습니다.");
+            toast.error("구독자 수 정보를 받아오지 못했습니다.", { autoClose: 1500 });
           }
         });
       } else {
-        alert("비디오 정보를 가져오길 실패했습니다.");
+        toast.error("비디오 정보를 가져오길 실패했습니다.", { autoClose: 1500 });
       }
     });
 
@@ -183,7 +183,7 @@ function VideoDetailPage() {
         setComments(response.data.comments);
         console.log("getComments ", response.data.comments);
       } else {
-        alert("댓글 정보를 가져오는 것을 실패했습니다.");
+        toast.error("댓글 정보를 가져오는 것을 실패했습니다.", { autoClose: 1500 });
       }
     });
 

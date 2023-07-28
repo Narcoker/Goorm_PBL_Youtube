@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { FaSearch } from "react-icons/fa";
 import axios from "axios";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { toast } from "react-toastify";
 
 function CenterNavbar(props) {
   const history = useHistory();
@@ -21,7 +22,7 @@ function CenterNavbar(props) {
           props.setSearchVideos(response.data.videos);
           history.push("/search");
         } else {
-          alert("비디오 검색에 실패했습니다.");
+          toast.error("비디오 검색에 실패했습니다.", { autoClose: 1500 });
         }
       })
       .catch((err) => {
