@@ -19,7 +19,7 @@ function SideVideoItem(props) {
 
       <MetaWrapper>
         <VideoTitle>{props.video.title}</VideoTitle>
-        <Writer>{props.video.writer.name}</Writer>
+        <Writer>{props.video.writer.nickname}</Writer>
         <Views>조회수 {props.video.view}회</Views>
       </MetaWrapper>
     </VideoContainer>

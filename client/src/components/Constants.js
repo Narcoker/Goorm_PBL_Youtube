@@ -19,17 +19,17 @@ export const CategoryOptions = [
     label: "자연",
     selected: false,
   },
+
   {
     value: 4,
-    label: "음악",
+    label: "만화 영화",
     selected: false,
   },
   {
     value: 5,
-    label: "엑션 어드밴처 게임",
+    label: "음악",
     selected: false,
   },
-
   {
     value: 6,
     label: "요리",
@@ -38,12 +38,6 @@ export const CategoryOptions = [
   {
     value: 7,
     label: "운동",
-    selected: false,
-  },
-
-  {
-    value: 8,
-    label: "만화 영화",
     selected: false,
   },
 ];

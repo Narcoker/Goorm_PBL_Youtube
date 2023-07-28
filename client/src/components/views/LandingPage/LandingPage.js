@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { CategoryOptions } from "../../Constants";
 import VideoItem from "./sections/VideoItem";
@@ -27,7 +26,16 @@ function LandingPage() {
     });
 
     setCategories(newCategories);
-    console.log(index);
+
+    axios
+      .post("/api/video/catagoryVideos", { category: categoris[index].label })
+      .then((response) => {
+        if (response.data.success) {
+          setVideos(response.data.videos);
+        } else {
+          toast.error(`${categoris[index].label} 을 불러오지 못했습니다.`);
+        }
+      });
   };
 
   const handleLeftArrow = () => {
@@ -88,7 +96,7 @@ const Container = styled.div`
 `;
 
 const CategoriesContainer = styled.div`
-  position: fixed;
+  /* position: fixed; */
   top: 55px;
   height: 40px;
   background-color: #111111;
@@ -101,18 +109,14 @@ const ArrowLeftButton = styled(AiOutlineLeft)`
   left: -30px;
   top: 50%;
   color: white;
-  transform: translateY(-50%);
-  /* float: right; */
-  /* box-shadow: 0 10px 10px rgba(255, 255, 255, 0.3); */
+  transform: translateY(-85%);
 `;
 const ArrowRightButton = styled(AiOutlineRight)`
   position: absolute;
   right: -30px;
   top: 50%;
   color: white;
-  transform: translateY(-50%);
-  /* float: right; */
-  /* box-shadow: 0 10px 10px rgba(255, 255, 255, 0.3); */
+  transform: translateY(-85%);
 `;
 
 const CategoryButton = styled.button`

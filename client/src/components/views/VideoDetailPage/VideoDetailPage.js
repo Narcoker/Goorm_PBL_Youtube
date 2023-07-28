@@ -254,7 +254,7 @@ function VideoDetailPage() {
               <WriterIcon src={videoDetail.writer.image} />
 
               <WriterNameSubscribeContainer>
-                <WriterName>{videoDetail.writer.name}</WriterName>
+                <WriterName>{videoDetail.writer.nickname}</WriterName>
                 <Subscriber>구독자 {subscribeNumber}명</Subscriber>
               </WriterNameSubscribeContainer>
 

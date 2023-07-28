@@ -18,7 +18,6 @@ function SettingModal(props) {
         history.push("/login");
       } else {
         toast.error("로그아웃하는데 실패했습니다.", { autoClose: 1500 });
-
       }
     });
   };
@@ -45,7 +44,7 @@ function SettingModal(props) {
           <UserIcon src={user.userData.image} />
         </Left>
         <Right>
-          <UserName>{user.userData.name}</UserName>
+          <UserName>{user.userData.nickname}</UserName>
           <UserId>@user-{user.userData._id.slice(0, 10)}</UserId>
           <Text>Google 계정 관리</Text>
         </Right>
@@ -61,10 +60,8 @@ function SettingModal(props) {
 
 const Container = styled.div`
   position: absolute;
-  /* border: 1px solid red; */
   top: 100%;
   right: 15px;
-  z-index: 12;
   background-color: #292929;
   border-radius: 10px;
 `;

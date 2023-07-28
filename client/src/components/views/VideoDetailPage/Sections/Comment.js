@@ -10,7 +10,7 @@ function Comment(props) {
             <WriterImage src={comment.writer.image} />
 
             <CommentContainer>
-              <Writer>{comment.writer.name}</Writer>
+              <Writer>{comment.writer.nickname}</Writer>
               <Content>{comment.content}</Content>
 
               <ButtonContainer>

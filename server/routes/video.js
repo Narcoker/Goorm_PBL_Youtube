@@ -177,4 +177,24 @@ router.post("/searchVideos", (req, res) => {
     });
 });
 
+router.post("/catagoryVideos", (req, res) => {
+  if (req.body.category === "전체") {
+    Video.find() // 비디오 컬렉션에서 모든 정보를 가져온다.
+      .populate("writer") // 그중에 writer 만 가져온다.
+      .exec((err, videos) => {
+        if (err) return res.status(400).send(err);
+        res.status(200).json({ success: true, videos });
+      });
+  } else {
+    Video.find({
+      category: req.body.category,
+    })
+      .populate("writer")
+      .exec((err, videos) => {
+        if (err) return res.status(400).send(err);
+        res.status(200).json({ success: true, videos });
+      });
+  }
+});
+
 module.exports = router;

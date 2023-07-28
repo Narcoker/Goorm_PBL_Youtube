@@ -39,14 +39,14 @@ function RegisterPage(props) {
     <Formik
       initialValues={{
         email: "",
-        lastName: "",
+        nickname: "",
         name: "",
         password: "",
         confirmPassword: "",
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string().required("Name is required"),
-        lastName: Yup.string().required("Last Name is required"),
+        nickname: Yup.string().required("Last Name is required"),
         email: Yup.string().email("Email is invalid").required("Email is required"),
         password: Yup.string()
           .min(6, "Password must be at least 6 characters")
@@ -61,7 +61,7 @@ function RegisterPage(props) {
             email: values.email,
             password: values.password,
             name: values.name,
-            lastname: values.lastname,
+            nickname: values.nickname,
             image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`,
           };
 
@@ -106,12 +106,12 @@ function RegisterPage(props) {
                 />
               </InputItem>
               <InputItem required>
-                <InputLabel>Last Name</InputLabel>
+                <InputLabel>Nickname</InputLabel>
                 <InputBox
-                  id="lastName"
-                  placeholder="성을 입력해주세요"
+                  id="nickname"
+                  placeholder="별명을 입력해주세요"
                   type="text"
-                  value={values.lastName}
+                  value={values.nickname}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />

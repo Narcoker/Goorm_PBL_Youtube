@@ -4,7 +4,7 @@ import Dropzone from "react-dropzone";
 import Axios from "axios";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
-import { toast, ToastContainer, Zoom } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PrivateOptions, CategoryOptions } from "../../Constants";
 
@@ -32,6 +32,7 @@ function VideoUploadPage() {
   };
 
   const onCatagoryChange = (e) => {
+    console.log(e.currentTarget.value);
     setCategory(e.currentTarget.value);
   };
 
@@ -145,7 +146,7 @@ function VideoUploadPage() {
 
           <Select onChange={onCatagoryChange} value={Category}>
             {CategoryOptions.map((item, index) => (
-              <Option key={index} value={item.value}>
+              <Option key={index} value={item.label}>
                 {item.label}
               </Option>
             ))}

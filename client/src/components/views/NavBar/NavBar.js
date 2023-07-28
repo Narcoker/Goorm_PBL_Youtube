@@ -14,14 +14,14 @@ function NavBar(props) {
 
   const closeModal = () => {
     setisModalOpened(false);
-  }
+  };
   return (
     <Container>
       <LeftNavbar />
       <CenterNavbar setSearchVideos={props.setSearchVideos} />
       <RightNavbar handleModal={handleModal} />
 
-      {isModalOpened && <SettingModal closeModal={closeModal}/>}
+      {isModalOpened && <SettingModal closeModal={closeModal} />}
     </Container>
   );
 }
