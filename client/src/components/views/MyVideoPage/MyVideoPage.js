@@ -39,17 +39,6 @@ function MyVideoPage() {
   return (
     <>
       <Container>
-        <CategoriesContainer>
-          {categoris.map((category, index) => (
-            <CategoryButton
-              selected={category.selected}
-              onClick={() => handleCategory(index)}
-            >
-              {category.label}
-            </CategoryButton>
-          ))}
-        </CategoriesContainer>
-
         <VideosContainer>
           {Videos.map((video) => (
             <VideoItem key={video._id} video={video} />
@@ -65,19 +54,6 @@ const Container = styled.div`
   background-color: #111111;
   padding: 0px 35px;
   overflow: auto;
-`;
-
-const CategoriesContainer = styled.div`
-  margin-bottom: 25px;
-`;
-
-const CategoryButton = styled.button`
-  margin-right: 5px;
-  padding: 3px 10px;
-  border-radius: 7px;
-  font-weight: 500;
-  color: ${(props) => (props.selected ? "black" : "white")};
-  background-color: ${(props) => (props.selected ? "white" : "#292929")};
 `;
 
 const VideosContainer = styled.div`

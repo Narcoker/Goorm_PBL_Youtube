@@ -1,11 +1,15 @@
 import styled from "@emotion/styled";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { FaCode } from "react-icons/fa";
+import React, { useEffect, useRef, useState } from "react";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { CategoryOptions } from "../../Constants";
 import VideoItem from "./sections/VideoItem";
 
 function LandingPage() {
+  const ButtonsRef = useRef(null);
+  const LeftRef = useRef(null);
+  const RightRef = useRef(null);
   const [Videos, setVideos] = useState([]);
   const [categoris, setCategories] = useState([
     {
@@ -23,6 +27,18 @@ function LandingPage() {
 
     setCategories(newCategories);
   };
+
+  const handleLeftArrow = () => {
+    if (ButtonsRef.current) {
+      ButtonsRef.current.scrollBy({ left: -100, behavior: "smooth" });
+    }
+  };
+
+  const handleRightArrow = () => {
+    if (ButtonsRef.current) {
+      ButtonsRef.current.scrollBy({ left: 100, behavior: "smooth" });
+    }
+  };
   useEffect(() => {
     axios.get("/api/video/getvideos").then((response) => {
       if (response.data.success) {
@@ -33,18 +49,25 @@ function LandingPage() {
       }
     });
   }, []);
+
   return (
     <>
       <Container>
         <CategoriesContainer>
-          {categoris.map((category, index) => (
-            <CategoryButton
-              selected={category.selected}
-              onClick={() => handleCategory(index)}
-            >
-              {category.label}
-            </CategoryButton>
-          ))}
+          <ArrowLeftButton ref={LeftRef} onClick={handleLeftArrow} />
+
+          <ButtonWrapper ref={ButtonsRef}>
+            {categoris.map((category, index) => (
+              <CategoryButton
+                selected={category.selected}
+                onClick={() => handleCategory(index)}
+              >
+                {category.label}
+              </CategoryButton>
+            ))}
+          </ButtonWrapper>
+
+          <ArrowRightButton ref={RightRef} onClick={handleRightArrow} />
         </CategoriesContainer>
 
         <VideosContainer>
@@ -65,7 +88,31 @@ const Container = styled.div`
 `;
 
 const CategoriesContainer = styled.div`
+  position: sticky;
+  top: 0;
   margin-bottom: 25px;
+  height: 28px;
+  padding-right: 27px;
+  background-color: #111111;
+`;
+
+const ArrowLeftButton = styled(AiOutlineLeft)`
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  color: white;
+  transform: translateY(-50%);
+  /* float: right; */
+  /* box-shadow: 0 10px 10px rgba(255, 255, 255, 0.3); */
+`;
+const ArrowRightButton = styled(AiOutlineRight)`
+  position: absolute;
+  right: 0;
+  top: 50%;
+  color: white;
+  transform: translateY(-50%);
+  /* float: right; */
+  /* box-shadow: 0 10px 10px rgba(255, 255, 255, 0.3); */
 `;
 
 const CategoryButton = styled.button`
@@ -75,6 +122,18 @@ const CategoryButton = styled.button`
   font-weight: 500;
   color: ${(props) => (props.selected ? "black" : "white")};
   background-color: ${(props) => (props.selected ? "white" : "#292929")};
+`;
+
+const ButtonWrapper = styled.div`
+  /* background-color: green; */
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 const VideosContainer = styled.div`

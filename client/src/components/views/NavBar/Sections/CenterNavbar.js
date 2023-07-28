@@ -60,7 +60,7 @@ const Container = styled.div`
 const Search = styled.input`
   background-color: #121212;
   padding: 5px 10px;
-  width: 500px;
+  width: 25vw;
   padding-left: 15px;
   color: white;
   outline: none;

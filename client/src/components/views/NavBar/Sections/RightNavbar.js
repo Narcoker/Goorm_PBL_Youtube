@@ -5,7 +5,7 @@ import { USER_SERVER } from "../../../Config";
 import axios from "axios";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { useSelector } from "react-redux";
-function RightNavbar() {
+function RightNavbar(props) {
   const user = useSelector((state) => state.user);
 
   const history = useHistory();
@@ -23,14 +23,7 @@ function RightNavbar() {
     return (
       <Container>
         <ButtonWrapper href="/login">
-          <FaRegUserCircle
-            style={{
-              color: "#2c73b9",
-              fontSize: "20px",
-              verticalAlign: "middle",
-              marginRight: "5px",
-            }}
-          ></FaRegUserCircle>
+          <RegUserIcon />
           <LoginText>로그인</LoginText>
         </ButtonWrapper>
       </Container>
@@ -41,19 +34,14 @@ function RightNavbar() {
         <AddVideoButton href="/upload">
           <AddVideoButtonImage src="/images/AddVideoButton2.png" />
         </AddVideoButton>
-        <UserIcon src={user.userData.image} />
+        <UserIcon src={user.userData.image} onClick={props.handleModal} />
+
+        {/* <SettingModal>
         <UserName>{user.userData.name}</UserName>
-        <ButtonWrapper href="/login">
-          {/* <FaRegUserCircle
-            style={{
-              color: "#2c73b9",
-              fontSize: "20px",
-              verticalAlign: "middle",
-              marginRight: "5px",
-            }}
-          ></FaRegUserCircle> */}
+        <ButtonWrapper href="/">
           <LoginText onClick={logoutHandler}>로그아웃</LoginText>
         </ButtonWrapper>
+      </SettingModal> */}
       </Container>
     );
   }
@@ -70,6 +58,13 @@ const ButtonWrapper = styled.a`
   margin-right: 20px;
   display: inline-block;
   padding: 5px 15px;
+`;
+
+const RegUserIcon = styled(FaRegUserCircle)`
+  color: #2c73b9;
+  font-size: 20px;
+  vertical-align: middle;
+  margin-right: 5px;
 `;
 
 const LoginText = styled.span`
@@ -98,11 +93,7 @@ const UserIcon = styled.img`
   height: 30px;
   vertical-align: top;
   margin-right: 10px;
-`;
-
-const UserName = styled.span`
-  color: white;
-  margin-right: 10px;
+  cursor: pointer;
 `;
 
 export default RightNavbar;
