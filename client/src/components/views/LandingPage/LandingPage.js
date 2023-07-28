@@ -1,65 +1,151 @@
-import { Row, Typography, Card, Col, Avatar } from "antd";
-import Axios from "axios";
-import React, { useEffect, useState } from "react";
-import moment from "moment";
-
-const { Title } = Typography;
-const { Meta } = Card;
+import styled from "@emotion/styled";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { CategoryOptions } from "../../Constants";
+import VideoItem from "./sections/VideoItem";
+import { toast } from "react-toastify";
 
 function LandingPage() {
-  const [Video, setVideo] = useState([]);
+  const ButtonsRef = useRef(null);
+  const LeftRef = useRef(null);
+  const RightRef = useRef(null);
+  const [Videos, setVideos] = useState([]);
+  const [categoris, setCategories] = useState([
+    {
+      value: 0,
+      label: "전체",
+      selected: true,
+    },
+    ...CategoryOptions,
+  ]);
 
+  const handleCategory = (index) => {
+    const newCategories = categoris.map((category, idx) => {
+      return { ...category, selected: idx === index };
+    });
+
+    setCategories(newCategories);
+
+    axios
+      .post("/api/video/catagoryVideos", { category: categoris[index].label })
+      .then((response) => {
+        if (response.data.success) {
+          setVideos(response.data.videos);
+        } else {
+          toast.error(`${categoris[index].label} 을 불러오지 못했습니다.`);
+        }
+      });
+  };
+
+  const handleLeftArrow = () => {
+    if (ButtonsRef.current) {
+      ButtonsRef.current.scrollBy({ left: -100, behavior: "smooth" });
+    }
+  };
+
+  const handleRightArrow = () => {
+    if (ButtonsRef.current) {
+      ButtonsRef.current.scrollBy({ left: 100, behavior: "smooth" });
+    }
+  };
   useEffect(() => {
-    Axios.get("/api/video/getvideos").then((response) => {
+    axios.get("/api/video/getvideos").then((response) => {
       if (response.data.success) {
         console.log(response.data);
-        setVideo(response.data.videos);
+        setVideos(response.data.videos);
       } else {
-        alert("비디오 가져오기를 실패했습니다.");
+        toast.error("비디오 가져오기를 실패했습니다.", { autoClose: 1500 });
       }
     });
   }, []);
 
-  const renderCards = Video.map((video, index) => {
-    var minutes = Math.floor(video.duration / 60);
-    var seconds = Math.floor(video.duration - minutes * 60);
-    return (
-      /* 가장 작을 때는 24, 중간 사이즈일때는 8 -> 한줄에 3개, 가장 클때는 6 -> 한줄에 4개*/
-      <Col lo={6} md={8} xs={24}>
-        <a href={`/video/${video._id}`}>
-          <div style={{ position: "relative" }}>
-            <img
-              style={{ width: "100%" }}
-              src={`http://localhost:9999/${video.thumbnail}`}
-              alt="thumbnail"
-            />
-            <div className="duration">
-              <span>
-                {minutes} : {seconds}
-              </span>
-            </div>
-          </div>
-        </a>
-        <br />
-        <Meta
-          avatar={<Avatar src={video.writer.image} />}
-          title={video.title}
-          description={video.description}
-        />
-        <span>{video.writer.name}</span> <br />
-        <span style={{ marginLeft: "3rem" }}> {video.views} views</span> -{" "}
-        <span>{moment(video.createdAt).format("MM-dd-YYYY")}</span>
-      </Col>
-    );
-  });
-
   return (
-    <div style={{ width: "85%", margin: "3rem auto" }}>
-      <Title level={2}> Recomended</Title>
-      <hr />
-      <Row gutter={[32, 16]}>{renderCards}</Row>
-    </div>
+    <>
+      <Container>
+        <CategoriesContainer>
+          <ArrowLeftButton ref={LeftRef} onClick={handleLeftArrow} />
+          <ButtonWrapper ref={ButtonsRef}>
+            {categoris.map((category, index) => (
+              <CategoryButton
+                selected={category.selected}
+                onClick={() => handleCategory(index)}
+              >
+                {category.label}
+              </CategoryButton>
+            ))}
+          </ButtonWrapper>
+          <ArrowRightButton ref={RightRef} onClick={handleRightArrow} />
+        </CategoriesContainer>
+
+        <VideosContainer>
+          {Videos.map((video) => (
+            <VideoItem key={video._id} video={video} />
+          ))}
+        </VideosContainer>
+      </Container>
+    </>
   );
 }
+const Container = styled.div`
+  height: calc(100vh - 56px);
+  margin-left: 64px;
+  background-color: #111111;
+  padding: 0px 35px;
+  overflow: auto;
+`;
+
+const CategoriesContainer = styled.div`
+  /* position: fixed; */
+  top: 55px;
+  height: 40px;
+  background-color: #111111;
+  z-index: 5;
+  width: calc(100vw - 140px);
+`;
+
+const ArrowLeftButton = styled(AiOutlineLeft)`
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  color: white;
+  transform: translateY(-85%);
+`;
+const ArrowRightButton = styled(AiOutlineRight)`
+  position: absolute;
+  right: -30px;
+  top: 50%;
+  color: white;
+  transform: translateY(-85%);
+`;
+
+const CategoryButton = styled.button`
+  margin-right: 5px;
+  padding: 3px 10px;
+  border-radius: 7px;
+  font-weight: 500;
+  color: ${(props) => (props.selected ? "black" : "white")};
+  background-color: ${(props) => (props.selected ? "white" : "#292929")};
+`;
+
+const ButtonWrapper = styled.div`
+  /* background-color: green; */
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+`;
+
+const VideosContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 15px;
+  padding: 10px;
+  margin-top: 60px;
+`;
 
 export default LandingPage;

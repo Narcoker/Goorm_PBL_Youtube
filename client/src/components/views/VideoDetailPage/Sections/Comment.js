@@ -1,81 +1,66 @@
-import React, { useState } from "react";
-import { Button, Input } from "antd";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import SingleComment from "./SingleComment";
-import ReplyComment from "./ReplyComment";
-const { TextArea } = Input;
+import React from "react";
+import styled from "@emotion/styled";
 
-function Comments(props) {
-  const user = useSelector((state) => state.user);
-  const [Comment, setComment] = useState("");
+function Comment(props) {
+  if (props.comments) {
+    return (
+      <Container>
+        {props.comments.map((comment) => (
+          <ContainerWrapper>
+            <WriterImage src={comment.writer.image} />
 
-  const handleChange = (e) => {
-    setComment(e.currentTarget.value);
-  };
+            <CommentContainer>
+              <Writer>{comment.writer.nickname}</Writer>
+              <Content>{comment.content}</Content>
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    const variables = {
-      content: Comment,
-      writer: user.userData._id,
-      postId: props.postId,
-    };
-
-    axios.post("/api/comment/saveComment", variables).then((response) => {
-      if (response.data.success) {
-        setComment("");
-        props.refreshFunction(response.data.result);
-      } else {
-        alert("Failed to save Comment");
-      }
-    });
-  };
-
-  return (
-    <div>
-      <br />
-      <p> replies</p>
-      <hr />
-      {/* Comment Lists  */}
-      {console.log(props.CommentLists)}
-
-      {props.CommentLists &&
-        props.CommentLists.map(
-          (comment, index) =>
-            !comment.responseTo && (
-              <React.Fragment>
-                <SingleComment
-                  comment={comment}
-                  postId={props.postId}
-                  refreshFunction={props.refreshFunction}
-                />
-                <ReplyComment
-                  CommentLists={props.CommentLists}
-                  postId={props.postId}
-                  parentCommentId={comment._id}
-                  refreshFunction={props.refreshFunction}
-                />
-              </React.Fragment>
-            )
-        )}
-
-      {/* Root Comment Form */}
-      <form style={{ display: "flex" }} onSubmit={onSubmit}>
-        <TextArea
-          style={{ width: "100%", borderRadius: "5px" }}
-          onChange={handleChange}
-          value={Comment}
-          placeholder="댓글을 작성해주세요"
-        />
-        <br />
-        <Button style={{ width: "20%", height: "52px" }} onClick={onSubmit}>
-          Submit
-        </Button>
-      </form>
-    </div>
-  );
+              <ButtonContainer>
+                <ReplyButton>답글</ReplyButton>
+              </ButtonContainer>
+            </CommentContainer>
+          </ContainerWrapper>
+        ))}
+      </Container>
+    );
+  } else {
+    return null;
+  }
 }
 
-export default Comments;
+const Container = styled.div``;
+
+const ContainerWrapper = styled.div`
+  display: flex;
+`;
+
+const CommentContainer = styled.div`
+  color: white;
+  margin-left: 10px;
+  margin-bottom: 20px;
+`;
+const WriterImage = styled.img`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  vertical-align: top;
+`;
+
+const Writer = styled.span``;
+
+const Content = styled.p``;
+
+const ButtonContainer = styled.div``;
+
+const ReplyButton = styled.button`
+  background-color: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 15px;
+  padding: 5px 10px;
+  transform: translateX(-10px);
+
+  &:hover {
+    background-color: #494949;
+  }
+`;
+
+export default Comment;

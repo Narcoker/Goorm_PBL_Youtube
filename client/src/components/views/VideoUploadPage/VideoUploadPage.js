@@ -1,45 +1,23 @@
 import React, { useState } from "react";
-import { Typography, Button, Form, message, Input, Icon } from "antd";
+import styled from "@emotion/styled";
 import Dropzone from "react-dropzone";
 import Axios from "axios";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { PrivateOptions, CategoryOptions } from "../../Constants";
 
-const { Title } = Typography;
-const { TextArea } = Input;
-
-const PrivateOptions = [
-  { value: 0, label: "Private" },
-  { value: 1, label: "Public" },
-];
-
-const CategoryOptions = [
-  {
-    value: 0,
-    label: "Film & Animation",
-  },
-  {
-    value: 1,
-    label: "Autos & Vehicles",
-  },
-  {
-    value: 2,
-    label: "Music",
-  },
-  {
-    value: 3,
-    label: "Pets & Animal",
-  },
-];
-
-function VideoUploadPage(props) {
+function VideoUploadPage() {
   const user = useSelector((state) => state.user);
   const [VideoTitle, setVideoTitle] = useState("");
   const [Description, setDescription] = useState("");
   const [Private, setPrivate] = useState(0);
-  const [Category, setCategory] = useState("Film & Animation");
+  const [Category, setCategory] = useState("게임");
   const [FilePath, setFilePath] = useState("");
   const [Duration, setDuration] = useState("");
   const [ThumbnailPath, setThumbnailPath] = useState("");
+  const history = useHistory();
 
   const onTitleChange = (e) => {
     setVideoTitle(e.currentTarget.value);
@@ -54,6 +32,7 @@ function VideoUploadPage(props) {
   };
 
   const onCatagoryChange = (e) => {
+    console.log(e.currentTarget.value);
     setCategory(e.currentTarget.value);
   };
 
@@ -81,18 +60,17 @@ function VideoUploadPage(props) {
             setDuration(response.data.fileDuration);
             setThumbnailPath(response.data.url);
           } else {
-            alert("썸네일 생성에 실패했습니다.");
+            toast.error("썸네일 생성에 실패했습니다.", { autoClose: 1500 });
           }
         });
       } else {
-        alert("비디오 업로드를 실패했습니디.");
+        toast.error("비디오 업로드를 실패했습니디.", { autoClose: 1500 });
       }
     });
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     const variable = {
       writer: user.userData._id,
       title: VideoTitle,
@@ -106,92 +84,192 @@ function VideoUploadPage(props) {
 
     Axios.post("/api/video/uploadVideo", variable).then((response) => {
       if (response.data.success) {
-        message.success("성공적으로 업로드를 했습니다.");
-
+        toast.success("성공적으로 업로드하였습니다!", { autoClose: 1000 });
         setTimeout(() => {
-          props.history.push("/");
-        }, 3000);
+          history.push("/");
+        }, 2000);
       } else {
-        alert("비디오 업로드에 실패 했습니다.");
+        toast.error("비디오 업로드에 실패 했습니다.", { autoClose: 1500 });
       }
     });
   };
+
   return (
-    <div>
-      <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
-        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <Title level={2}>Upload Video</Title>
-        </div>
+    <Container>
+      <Header>
+        <Title>동영상 업로드</Title>
+      </Header>
 
-        <Form onSubmit={onSubmit}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            {/* drop zone */}
-            <Dropzone onDrop={onDrop} multiple={false} maxSize={1000000000}>
+      <Content onSubmit={onsubmit}>
+        <InputItem>
+          <UploadVideo>
+            <VideoDropZoneWrapper onDrop={onDrop} multiple={false} maxSize={1000000000}>
               {({ getRootProps, getInputProps }) => (
-                <div
-                  style={{
-                    width: "300px",
-                    height: "240px",
-                    border: "1px solid lightgray",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                  {...getRootProps()}
-                >
+                <VideoZone {...getRootProps()}>
                   <input {...getInputProps()} />
-
-                  <Icon type="plus" style={{ fontSize: "3rem" }} />
-                </div>
+                  <PlusIcon>+</PlusIcon>
+                </VideoZone>
               )}
-            </Dropzone>
-            {/* Thumbnail */}
-            <div>
-              {ThumbnailPath && (
-                <img src={`http://localhost:9999/${ThumbnailPath}`} alt="thumbnail" />
+            </VideoDropZoneWrapper>
+
+            <VideoThumbnailWrapper>
+              {ThumbnailPath ? (
+                <VideoThumbnail
+                  src={`http://localhost:9999/${ThumbnailPath}`}
+                  alt="thumbnail"
+                />
+              ) : (
+                <VideoThumbnailTemp></VideoThumbnailTemp>
               )}
-            </div>
-          </div>
-          <br />
-          <br />
+            </VideoThumbnailWrapper>
+          </UploadVideo>
+        </InputItem>
 
-          <label>Title</label>
-          <Input onChange={onTitleChange} value={VideoTitle} />
-          <br />
-          <br />
+        <InputItem>
+          <Label>Title</Label>
+          <Input onChange={onTitleChange} value={VideoTitle} maxLength={100} />
+        </InputItem>
 
-          <label>Description</label>
+        <InputItem>
+          <Label>Description</Label>
           <TextArea onChange={onDescriptionChange} value={Description} />
-          <br />
-          <br />
+        </InputItem>
 
-          <select onChange={onPrivateChange} value={Private}>
+        <InputItem>
+          <Select onChange={onPrivateChange} value={Private}>
             {PrivateOptions.map((item, index) => (
-              <option key={index} value={item.value}>
+              <Option key={index} value={item.value}>
                 {item.label}
-              </option>
+              </Option>
             ))}
-          </select>
-          <br />
-          <br />
+          </Select>
 
-          <select onChange={onCatagoryChange} value={Category}>
+          <Select onChange={onCatagoryChange} value={Category}>
             {CategoryOptions.map((item, index) => (
-              <option key={index} value={item.value}>
+              <Option key={index} value={item.label}>
                 {item.label}
-              </option>
+              </Option>
             ))}
-          </select>
-          <br />
-          <br />
+          </Select>
+        </InputItem>
 
-          <Button type="primary" size="large" onClick={onSubmit}>
-            Sumbit
-          </Button>
-        </Form>
-      </div>
-    </div>
+        <SubmitContainer>
+          <SubmitButton onClick={onSubmit}>업로드</SubmitButton>
+        </SubmitContainer>
+      </Content>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 56px);
+  background-color: #111111;
+`;
+
+//header
+const Header = styled.div`
+  margin-bottom: 20px;
+`;
+const Title = styled.h1`
+  color: white;
+`;
+
+//content
+const Content = styled.form``;
+
+const UploadVideo = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const VideoDropZoneWrapper = styled(Dropzone)``;
+const VideoZone = styled.div`
+  width: 300px;
+  height: 240px;
+  background-color: #292929;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 40px;
+  cursor: pointer;
+`;
+const PlusIcon = styled.span`
+  color: white;
+  font-size: 48px;
+  font-weight: 100;
+`;
+const VideoThumbnailWrapper = styled.div``;
+const VideoThumbnail = styled.img``;
+const VideoThumbnailTemp = styled.div`
+  width: 300px;
+  height: 240px;
+  background-color: #292929;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+`;
+
+const InputItem = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Label = styled.label`
+  color: white;
+  display: inline-block;
+  margin-bottom: 5px;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  height: 30px;
+  background-color: transparent;
+  color: white;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #a5a5a5;
+`;
+const TextArea = styled.textarea`
+  width: 100%;
+  height: 150px;
+  background-color: transparent;
+  color: white;
+  outline: none;
+  border: 1px solid #a5a5a5;
+  border-radius: 10px;
+`;
+
+const Select = styled.select`
+  display: block;
+  width: 140px;
+  margin-bottom: 10px;
+  padding: 2px;
+  border-radius: 5px;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+`;
+
+const Option = styled.option``;
+
+const SubmitContainer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+`;
+
+const SubmitButton = styled.button`
+  padding: 5px 35px;
+  color: white;
+  border-radius: 5px;
+  background-color: #40a9ff;
+  transition: 0.3s;
+  &:hover {
+    background-color: white;
+    color: #40a9ff;
+  }
+`;
 
 export default VideoUploadPage;

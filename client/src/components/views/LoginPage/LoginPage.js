@@ -1,72 +1,73 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { loginUser } from "../../../_actions/user_actions";
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { Form, Icon, Input, Button, Checkbox, Typography } from 'antd';
-import { useDispatch } from "react-redux";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
-const { Title } = Typography;
+import styled from "@emotion/styled";
+import { useDispatch } from "react-redux";
+import Logo from "../NavBar/Sections/Logo";
 
 function LoginPage(props) {
   const dispatch = useDispatch();
   const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false;
 
-  const [formErrorMessage, setFormErrorMessage] = useState('')
-  const [rememberMe, setRememberMe] = useState(rememberMeChecked)
+  const [formErrorMessage, setFormErrorMessage] = useState("");
+  const [rememberMe, setRememberMe] = useState(rememberMeChecked);
 
   const handleRememberMe = () => {
-    setRememberMe(!rememberMe)
+    setRememberMe(!rememberMe);
   };
 
-  const initialEmail = localStorage.getItem("rememberMe") ? localStorage.getItem("rememberMe") : '';
+  const initialEmail = localStorage.getItem("rememberMe")
+    ? localStorage.getItem("rememberMe")
+    : "";
 
   return (
     <Formik
       initialValues={{
-        email: initialEmail,
-        password: '',
+        // email: initialEmail,
+        email: "",
+        password: "",
       }}
       validationSchema={Yup.object().shape({
-        email: Yup.string()
-          .email('Email is invalid')
-          .required('Email is required'),
+        email: Yup.string().email("Email is invalid").required("Email is required"),
         password: Yup.string()
-          .min(6, 'Password must be at least 6 characters')
-          .required('Password is required'),
+          .min(6, "Password must be at least 6 characters")
+          .required("Password is required"),
       })}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
           let dataToSubmit = {
             email: values.email,
-            password: values.password
+            password: values.password,
           };
 
           dispatch(loginUser(dataToSubmit))
-            .then(response => {
+            .then((response) => {
               if (response.payload.loginSuccess) {
-                window.localStorage.setItem('userId', response.payload.userId);
+                window.localStorage.setItem("userId", response.payload.userId);
                 if (rememberMe === true) {
-                  window.localStorage.setItem('rememberMe', values.id);
+                  window.localStorage.setItem("rememberMe", values.id);
                 } else {
-                  localStorage.removeItem('rememberMe');
+                  localStorage.removeItem("rememberMe");
                 }
                 props.history.push("/");
               } else {
-                setFormErrorMessage('Check out your Account or Password again')
+                setFormErrorMessage("Check out your Account or Password again");
               }
             })
-            .catch(err => {
-              setFormErrorMessage('Check out your Account or Password again')
+            .catch((err) => {
+              setFormErrorMessage("Check out your Account or Password again");
               setTimeout(() => {
-                setFormErrorMessage("")
+                setFormErrorMessage("");
               }, 3000);
             });
           setSubmitting(false);
         }, 500);
       }}
     >
-      {props => {
+      {(props) => {
         const {
           values,
           touched,
@@ -79,71 +80,116 @@ function LoginPage(props) {
           handleReset,
         } = props;
         return (
-          <div className="app">
-
-            <Title level={2}>Log In</Title>
-            <form onSubmit={handleSubmit} style={{ width: '350px' }}>
-
-              <Form.Item required>
-                <Input
+          <Container>
+            <Logo big width={"240px"} height={"130px"} />
+            <Form onSubmit={handleSubmit}>
+              <InputItem required>
+                <InputLabel>Email</InputLabel>
+                <InputBox
                   id="email"
-                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Enter your email"
+                  placeholder="이메일을 입력해주세요"
                   type="email"
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={
-                    errors.email && touched.email ? 'text-input error' : 'text-input'
-                  }
                 />
-                {errors.email && touched.email && (
-                  <div className="input-feedback">{errors.email}</div>
-                )}
-              </Form.Item>
-
-              <Form.Item required>
-                <Input
+              </InputItem>
+              <InputItem required>
+                <InputLabel>Password</InputLabel>
+                <InputBox
                   id="password"
-                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Enter your password"
+                  placeholder="패스워드를 입력해주세요"
                   type="password"
                   value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={
-                    errors.password && touched.password ? 'text-input error' : 'text-input'
-                  }
                 />
-                {errors.password && touched.password && (
-                  <div className="input-feedback">{errors.password}</div>
-                )}
-              </Form.Item>
+              </InputItem>
 
-              {formErrorMessage && (
-                <label ><p style={{ color: '#ff0000bf', fontSize: '0.7rem', border: '1px solid', padding: '1rem', borderRadius: '10px' }}>{formErrorMessage}</p></label>
-              )}
+              <InputItem>
+                <CheckBox
+                  id="rememberMe"
+                  type="checkbox"
+                  onChange={handleRememberMe}
+                  checked={rememberMe}
+                />
+                <CheckBoxLabel htmlFor="rememberMe">Remember me</CheckBoxLabel>
+              </InputItem>
 
-              <Form.Item>
-                <Checkbox id="rememberMe" onChange={handleRememberMe} checked={rememberMe} >Remember me</Checkbox>
-                <a className="login-form-forgot" href="/reset_user" style={{ float: 'right' }}>
-                  forgot password
-                  </a>
-                <div>
-                  <Button type="primary" htmlType="submit" className="login-form-button" style={{ minWidth: '100%' }} disabled={isSubmitting} onSubmit={handleSubmit}>
-                    Log in
-                </Button>
-                </div>
-                Or <a href="/register">register now!</a>
-              </Form.Item>
-            </form>
-          </div>
+              <LoginButton
+                type="primary"
+                htmlType="submit"
+                className="login-form-button"
+                style={{ minWidth: "100%" }}
+                disabled={isSubmitting}
+                onSubmit={handleSubmit}
+              >
+                로그인
+              </LoginButton>
+            </Form>
+            <SignInButton href="/register">회원가입</SignInButton>
+          </Container>
         );
       }}
     </Formik>
   );
-};
+}
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #111111;
+`;
+
+const Form = styled.form`
+  width: 350px;
+`;
+
+const InputItem = styled.div`
+  margin-bottom: 20px;
+`;
+
+const InputLabel = styled.label`
+  display: block;
+  color: white;
+`;
+
+const InputBox = styled.input`
+  width: 100%;
+  height: 40px;
+  background-color: transparent;
+  color: white;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #a5a5a5;
+`;
+
+const CheckBox = styled.input`
+  margin-right: 5px;
+`;
+
+const CheckBoxLabel = styled.label`
+  color: white;
+`;
+
+const LoginButton = styled.button`
+  color: white;
+  background-color: #40a9ff;
+  border-radius: 10px;
+  height: 40px;
+`;
+
+const SignInButton = styled.a`
+  color: white;
+  margin-top: 20px;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 export default withRouter(LoginPage);
-
-

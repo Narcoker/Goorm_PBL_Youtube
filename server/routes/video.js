@@ -143,4 +143,58 @@ router.post("/getSubscriptionVideos", (req, res) => {
   // 찾은 사람들의 비디오를 가지고 온다.
 });
 
+router.post("/getMyVideos", (req, res) => {
+  console.log(req.body.userId);
+  Video.find({ writer: req.body.userId })
+    .populate("writer")
+    .exec((err, videos) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).json({ success: true, videos });
+    });
+});
+
+router.post("/increaseVideoView", (req, res) => {
+  const videoId = req.body.videoId;
+  Video.findOneAndUpdate(
+    { _id: videoId },
+    { $inc: { view: 1 } },
+    { new: true },
+    (err, video) => {
+      if (err) return res.status(400).json({ success: false, err });
+      res.status(200).json({ success: true, video });
+    }
+  );
+});
+
+router.post("/searchVideos", (req, res) => {
+  Video.find({
+    title: { $regex: req.body.query, $options: "i" }, // 'i' option makes it case insensitive
+  })
+    .populate("writer")
+    .exec((err, videos) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).json({ success: true, videos });
+    });
+});
+
+router.post("/catagoryVideos", (req, res) => {
+  if (req.body.category === "전체") {
+    Video.find() // 비디오 컬렉션에서 모든 정보를 가져온다.
+      .populate("writer") // 그중에 writer 만 가져온다.
+      .exec((err, videos) => {
+        if (err) return res.status(400).send(err);
+        res.status(200).json({ success: true, videos });
+      });
+  } else {
+    Video.find({
+      category: req.body.category,
+    })
+      .populate("writer")
+      .exec((err, videos) => {
+        if (err) return res.status(400).send(err);
+        res.status(200).json({ success: true, videos });
+      });
+  }
+});
+
 module.exports = router;
