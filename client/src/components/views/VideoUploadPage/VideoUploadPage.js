@@ -13,7 +13,7 @@ function VideoUploadPage() {
   const [VideoTitle, setVideoTitle] = useState("");
   const [Description, setDescription] = useState("");
   const [Private, setPrivate] = useState(0);
-  const [Category, setCategory] = useState("Film & Animation");
+  const [Category, setCategory] = useState("게임");
   const [FilePath, setFilePath] = useState("");
   const [Duration, setDuration] = useState("");
   const [ThumbnailPath, setThumbnailPath] = useState("");

@@ -362,6 +362,7 @@ const WriterName = styled.span`
   color: white;
   display: block;
   font-weight: bold;
+  white-space: nowrap;
 `;
 
 const Subscriber = styled.span`
