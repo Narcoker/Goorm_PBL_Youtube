@@ -14,7 +14,7 @@ import SideVideos from "./Sections/SideVideos";
 import CommentForm from "./Sections/CommentForm";
 import Comment from "./Sections/Comment";
 import { useSelector } from "react-redux";
-import { toast, ToastContainer, Zoom } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function VideoDetailPage() {
@@ -234,7 +234,7 @@ function VideoDetailPage() {
 
       return () => video.removeEventListener("timeupdate", checkVideoTime);
     }
-  }, [videoDetail.writer, videoRef]);
+  }, [videoDetail, videoId]);
 
   return (
     <>
@@ -270,7 +270,6 @@ function VideoDetailPage() {
                   <ButtonContainer>
                     <Like onClick={onLike} isLiked={isLiked}>
                       {isLiked ? <LikeActiveIcon /> : <LikeIcon />}
-
                       {like}
                     </Like>
                     <Dislike onClick={onDisLike} isDisliked={isDisliked}>
